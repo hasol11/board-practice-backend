@@ -1,6 +1,6 @@
 package com.practice.board.user.repository;
 
-import com.practice.board.entity.User;
+import com.practice.board.common.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository; // Repository 대신 JpaRepository
 import org.springframework.stereotype.Repository;
 

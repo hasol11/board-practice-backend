@@ -1,8 +1,10 @@
 package com.practice.board.user.controller;
 
+import com.practice.board.common.dto.ResponseDto;
 import com.practice.board.user.dto.UserDto;
 import com.practice.board.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +17,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/login")
-    public String login(@RequestBody UserDto.Login logindto) {
+    public ResponseEntity<ResponseDto<?>> login(@RequestBody UserDto.Login logindto) {
         return userService.login(logindto);
     }
 }
