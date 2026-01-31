@@ -9,4 +9,8 @@ public class UserDto {
         private String nickname;
         private String password;
     }
+    @Getter @Setter
+    public static class FindNickName {
+        private String nickname;
+    }
 }

@@ -33,4 +33,33 @@ public class UserService {
                 new ResponseDto<>(200, "로그인 성공", Map.of("id", user.getUserId(), "nickname", user.getNickname()))
         );
     }
+
+    public ResponseEntity<ResponseDto<?>> findNickName(UserDto.FindNickName findNickNamedto) {
+        User user = userRepository.findByNickname(findNickNamedto.getNickname()).orElse(null);
+
+        if (user != null) {
+            return ResponseEntity.ok(
+                    new ResponseDto<>(200, "이미 사용 중인 닉네임입니다.", Map.of("available", false))
+            );
+        }
+        return ResponseEntity.ok(
+                new ResponseDto<>(200, "사용 가능한 닉네임입니다.", Map.of("available", true))
+        );
+    }
+
+    public ResponseEntity<ResponseDto<?>> signup(UserDto.Login signUpdto) {
+        if (userRepository.findByNickname(signUpdto.getNickname()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(new ResponseDto<>(409, "이미 존재하는 닉네임입니다.", null));
+        }
+        User user = new User();
+        user.setNickname(signUpdto.getNickname());
+        user.setPassword(signUpdto.getPassword());
+
+        userRepository.save(user);
+
+        return ResponseEntity.ok(
+                new ResponseDto<>(200, "회원가입 성공", null)
+        );
+    }
 }

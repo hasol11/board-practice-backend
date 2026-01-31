@@ -20,4 +20,12 @@ public class UserController {
     public ResponseEntity<ResponseDto<?>> login(@RequestBody UserDto.Login logindto) {
         return userService.login(logindto);
     }
+    @PostMapping("/findNickName")
+    public ResponseEntity<ResponseDto<?>> findNickName(@RequestBody UserDto.FindNickName findNickNamedto) {
+        return userService.findNickName(findNickNamedto);
+    }
+    @PostMapping("/signup")
+    public ResponseEntity<ResponseDto<?>> signup(@RequestBody UserDto.Login signUpdto) {
+        return userService.signup(signUpdto);
+    }
 }
