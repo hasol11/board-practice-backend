@@ -22,8 +22,8 @@ public class Board {
     @Column(nullable = false)
     private String content;
 
-    @Column(name = "create_at", nullable = false, updatable = false)
-    private LocalDateTime createAt = LocalDateTime.now();
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(name = "view_count", nullable = false)
     private int viewCount = 0;
