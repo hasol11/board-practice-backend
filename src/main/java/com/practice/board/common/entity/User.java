@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter @Setter
 @NoArgsConstructor
@@ -20,4 +22,6 @@ public class User {
     private String password;
     @Column(nullable = false)
     private String nickname;
+    @Column(name="join_date", nullable = false, updatable = false)
+    private LocalDateTime joinDate;
 }

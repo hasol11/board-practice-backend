@@ -5,10 +5,7 @@ import com.practice.board.user.dto.UserDto;
 import com.practice.board.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,5 +24,9 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<ResponseDto<?>> signup(@RequestBody UserDto.Login signUpdto) {
         return userService.signup(signUpdto);
+    }
+    @GetMapping("/mypage/{userId}")
+    public ResponseEntity<ResponseDto<?>> mypage(@PathVariable Long userId) {
+        return userService.mypage(userId);
     }
 }

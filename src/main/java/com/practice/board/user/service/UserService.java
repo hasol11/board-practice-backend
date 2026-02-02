@@ -1,5 +1,6 @@
 package com.practice.board.user.service;
 
+import com.practice.board.board.repository.BoardRepository;
 import com.practice.board.common.dto.ResponseDto;
 import com.practice.board.common.entity.User;
 import com.practice.board.user.dto.UserDto;
@@ -15,6 +16,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final BoardRepository boardRepository;
 
     public ResponseEntity<ResponseDto<?>> login(UserDto.Login logindto) {
         User user = userRepository.findByNickname(logindto.getNickname()).orElse(null);
@@ -60,6 +62,26 @@ public class UserService {
 
         return ResponseEntity.ok(
                 new ResponseDto<>(200, "회원가입 성공", null)
+        );
+    }
+
+    public ResponseEntity<ResponseDto<?>> mypage(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseDto<>(404, "사용자를 찾을 수 없습니다.", null));
+        }
+
+        long postCount = boardRepository.countByUserUserId(userId);
+
+        return ResponseEntity.ok(
+                new ResponseDto<>(200, "마이페이지 조회 성공", Map.of(
+                        "id", user.getUserId(),
+                        "nickname", user.getNickname(),
+                        "postCount", postCount,
+                        "joinDate", user.getJoinDate()
+                ))
         );
     }
 }
