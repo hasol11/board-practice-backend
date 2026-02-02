@@ -21,9 +21,13 @@ public class BoardService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public ResponseEntity<ResponseDto<?>> getBoardList() {
-        List<Board> boards = boardRepository.findAll();
-
+    public ResponseEntity<ResponseDto<?>> getBoardList(String keyword) {
+        List<Board> boards;
+        if(keyword == null || keyword.isEmpty()) {
+            boards = boardRepository.findAllByOrderByCreatedAtDesc();
+        } else {
+            boards = boardRepository.findByTitleContainingOrderByCreatedAtDesc(keyword);
+        }
         List<BoardDto.BoardListDto> boardListDtos = boards.stream()
                 .map(BoardDto.BoardListDto::new)
                 .collect(Collectors.toList());

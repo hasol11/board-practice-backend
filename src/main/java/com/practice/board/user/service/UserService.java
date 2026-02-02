@@ -8,8 +8,10 @@ import com.practice.board.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Service
@@ -17,6 +19,7 @@ import java.util.Map;
 public class UserService {
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public ResponseEntity<ResponseDto<?>> login(UserDto.Login logindto) {
         User user = userRepository.findByNickname(logindto.getNickname()).orElse(null);
@@ -26,7 +29,7 @@ public class UserService {
                     .body(new ResponseDto<>(404, "사용자를 찾을 수 없습니다.", null));
         }
 
-        if (!user.getPassword().equals(logindto.getPassword())) {
+        if (!passwordEncoder.matches(logindto.getPassword(), user.getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new ResponseDto<>(401, "비밀번호가 일치하지 않습니다.", null));
         }
@@ -56,8 +59,9 @@ public class UserService {
         }
         User user = new User();
         user.setNickname(signUpdto.getNickname());
-        user.setPassword(signUpdto.getPassword());
-
+        String encodedPassword = passwordEncoder.encode(signUpdto.getPassword());
+        user.setPassword(encodedPassword);
+        user.setJoinDate(LocalDateTime.now());
         userRepository.save(user);
 
         return ResponseEntity.ok(

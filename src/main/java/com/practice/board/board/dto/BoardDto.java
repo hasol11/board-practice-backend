@@ -32,6 +32,7 @@ public class BoardDto {
         private String title;
         private String content;
         private String nickname;
+        private Long userId;
         private LocalDateTime createdAt;
         private LocalDateTime updateAt;
         private Integer viewCount;
@@ -41,6 +42,7 @@ public class BoardDto {
             this.title = board.getTitle();
             this.content = board.getContent();
             this.nickname = board.getUser().getNickname();
+            this.userId = board.getUser().getUserId();
             this.createdAt = board.getCreatedAt();
             this.updateAt = board.getUpdateAt();
             this.viewCount = board.getViewCount();

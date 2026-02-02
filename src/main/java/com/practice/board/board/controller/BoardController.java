@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.*;
 public class BoardController {
     private final BoardService boardService;
     @GetMapping("/list")
-    public ResponseEntity<ResponseDto<?>> getBoardList(){
-        return boardService.getBoardList();
+    public ResponseEntity<ResponseDto<?>> getBoardList(@RequestParam(value = "keyword", required = false) String keyword){
+        return boardService.getBoardList(keyword);
     }
 
     @GetMapping("/{boardId}")
