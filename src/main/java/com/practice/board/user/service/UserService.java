@@ -3,6 +3,7 @@ package com.practice.board.user.service;
 import com.practice.board.board.repository.BoardRepository;
 import com.practice.board.common.dto.ResponseDto;
 import com.practice.board.common.entity.User;
+import com.practice.board.config.JwtTokenProvider;
 import com.practice.board.user.dto.UserDto;
 import com.practice.board.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     public ResponseEntity<ResponseDto<?>> login(UserDto.Login logindto) {
         User user = userRepository.findByNickname(logindto.getNickname()).orElse(null);
@@ -34,8 +36,9 @@ public class UserService {
                     .body(new ResponseDto<>(401, "비밀번호가 일치하지 않습니다.", null));
         }
 
+        String token = jwtTokenProvider.createToken(user.getUserId(), user.getNickname());
         return ResponseEntity.ok(
-                new ResponseDto<>(200, "로그인 성공", Map.of("id", user.getUserId(), "nickname", user.getNickname()))
+                new ResponseDto<>(200, "로그인 성공", Map.of("id", user.getUserId(), "nickname", user.getNickname(),"token", token))
         );
     }
 
